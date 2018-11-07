@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Produto;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,5 +29,23 @@ class HelloController extends Controller
         return $this->render("hello/mensagem.html.twig", [
             'mensagem' => 'School Of Net !!!'
         ]);
+    }
+
+    /**
+     * @return Response
+     * @Route("cadastrar-produto")
+     */
+    public function produto()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $produto = new Produto();
+        $produto->setNome("Notebook");
+        $produto->setPreco(1800.00);
+
+        $entityManager->persist($produto);
+        $entityManager->flush();
+
+        return new Response("O produto #".$produto->getId()." - ".$produto->getNome()." foi adicionado com sucesso.");
     }
 }

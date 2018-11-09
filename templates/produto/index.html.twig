@@ -3,6 +3,12 @@
 
 {% block body %}
 
+    {% for flashMessage in app.session.flashbag.get('sucesso') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    
     <h1>Listagem de Produtos</h1>
 
     <a href="" class="btn btn-primary btn-lg mt-4 mb-4">Adicionar Produto</a>
@@ -16,8 +22,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                {% for produto in produtos %}
+            {% for produto in produtos %}
+                <tr>
                     <td>{{ produto.id }}</td>
                     <td>{{ produto.nome }}</td>
                     <td>{{ produto.preco }}</td>
@@ -26,8 +32,8 @@
                         <a class="btn btn-sm btn-success" href=""><i class="fa fa-pen"></i></a>
                         <a class="btn btn-sm btn-danger" href=""><i class="fa fa-trash"></i></a>
                     </td>
-                {% endfor %}
-            </tr>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

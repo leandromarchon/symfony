@@ -20,21 +20,21 @@ class Produto
     /**
      * @var string
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Campo nome não pode ser vazio.")
      */
     private $nome;
 
     /**
      * @var float
      * @ORM\Column(type="decimal", scale=2)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Campo preço não pode ser vazio.")
      */
     private $preco;
 
     /**
      * @var string
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Campo descrição não pode ser vazio.")
      */
     private $descricao;
 

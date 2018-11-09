@@ -34,7 +34,7 @@ class ProdutoType extends AbstractType
                 )
             ))
             ->add('enviar', SubmitType::class, array(
-                'label' => 'Cadastrar',
+                'label' => 'Salvar',
                 'attr' => array(
                     'class' => 'btn btn-primary mt-5'
                 )

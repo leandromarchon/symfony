@@ -35,11 +35,11 @@ class ProdutoController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($produto);
-            $em->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($produto);
+            $entityManager->flush();
 
-            $this->get('session')->getFlashBag()->set('sucesso', 'Produto cadastrado com sucesso!');
+            $this->get('session')->getFlashBag()->set('success', 'Produto cadastrado com sucesso!');
             return $this->redirectToRoute('listar_produto');
         }
         
@@ -55,17 +55,17 @@ class ProdutoController extends AbstractController
      */
     public function update(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $produto = $em->getRepository(Produto::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $produto = $entityManager->getRepository(Produto::class)->find($id);
 
         $form = $this->createForm(ProdutoType::class, $produto);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $em->persist($produto);
-            $em->flush();
+            $entityManager->persist($produto);
+            $entityManager->flush();
 
-            $this->get('session')->getFlashBag()->set('sucesso', 'Produto ' . $produto->getNome() . ' alterado com sucesso.');
+            $this->get('session')->getFlashBag()->set('success', 'Produto ' . $produto->getNome() . ' alterado com sucesso.');
             return $this->redirectToRoute('listar_produto');
         }
         
@@ -83,11 +83,34 @@ class ProdutoController extends AbstractController
      */
     public function view(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $produto = $em->getRepository(Produto::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $produto = $entityManager->getRepository(Produto::class)->find($id);
         
         return $this->render("produto/view.html.twig", array(
             'produto' => $produto
         ));
+    }
+
+    /**
+     * @param Request $request
+     * @Route("produto/apagar/{id}", name="apagar_produto")
+     */
+    public function delete(Request $request, $id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $produto = $entityManager->getRepository(Produto::class)->find($id);
+
+        if(!$produto){
+            $mensagem = "Registro não encontrado!";
+            $tipo = "warning";
+        }else{
+            $entityManager->remove($produto);
+            $entityManager->flush();
+            $mensagem = "Registro excluído com sucesso!";
+            $tipo = "success";
+        }
+
+        $this->get('session')->getFlashBag()->set($tipo, $mensagem);
+        return $this->redirectToRoute("listar_produto");
     }
 }
